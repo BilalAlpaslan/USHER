@@ -41,16 +41,16 @@ async def websocket_endpoint(websocket: WebSocket):
             if data["type"] == "play":
                 await manager.send_broadcast("play", websocket)
                 
-            if data["type"] == "pause":
+            elif data["type"] == "pause":
                 await manager.send_broadcast("pause", websocket)
 
             else:
                 print("[another commend]", data)
 
-    except WebSocketDisconnect:
+    except Exception as e:
         await manager.disconnect(websocket)
-        print("disconnect")
+        print("disconnect", e)
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run("main:app", port=8001, reload=True)
+    uvicorn.run("main:app", host="192.168.1.104", port=8001)
