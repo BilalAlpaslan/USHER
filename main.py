@@ -1,5 +1,5 @@
 from fastapi import FastAPI, WebSocket
-from starlette.websockets import WebSocketDisconnect
+
 app = FastAPI()
 
 
@@ -53,4 +53,4 @@ async def websocket_endpoint(websocket: WebSocket):
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run("main:app", host="192.168.1.104", port=8001)
+    uvicorn.run("main:app", host="192.168.1.104", port=8001, ssl_keyfile="cert.key", ssl_certfile="cert.crt")
