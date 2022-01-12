@@ -10,10 +10,15 @@
     <link rel="stylesheet" href="./index.css">
     <!-- favicon -->
     <link rel="shortcut icon" href="favicon.png" type="./favicon.png">
+    <!-- http://localhost:3000/socket.io/socket.io.js -->
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
 </head>
 
 <body style="background-color: #111;">
-    <script src="./index.js"></script>
+    <script>
+        var socket = io('http://localhost:3000');
+      </script>
+    <!-- <script src="./index.js"></l> -->
 
     <!-- video frame -->
     <div class="video-frame">
@@ -23,7 +28,6 @@
         <canvas id="canvas"></canvas>
     </div>
 
-    <!-- fixed navbar -->
     <div class="navbar navbar-default navbar-fixed-bottom" style="background-color: #111;">
         <button class="btn btn-primary" onclick="playPause()">Play/Pause</button>
         <!-- <button class="btn btn-primary" onclick="chVideo">Change</button> -->

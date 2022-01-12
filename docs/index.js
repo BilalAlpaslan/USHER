@@ -2,7 +2,7 @@
 let myVideo = document.getElementById("video");
 var videoListener;
 
-var ws = new WebSocket("wss://usher-api.herokuapp.com/ws");
+var ws = new WebSocket("ws://localhost:8001/ws");
 
 ws.onopen = function () {
     console.log("Connected to server");
