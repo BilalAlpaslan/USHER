@@ -3,7 +3,7 @@ let myVideo = document.getElementById("video");
 var videoListener;
 
 // var ws = new WebSocket("wss://192.168.1.104:8001/ws");
-var ws = new WebSocket("wss://usher-api.herokuapp.com/ws");
+var ws = new WebSocket("ws://164.92.250.16:8000/ws");
 
 
 ws.onopen = function () {
