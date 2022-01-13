@@ -1,26 +1,8 @@
 
+var ws = new WebSocket("ws://164.92.250.16:8000/ws");
 let myVideo = document.getElementById("video");
 var videoListener;
-
-// var ws = new WebSocket("wss://192.168.1.104:8001/ws");
-var ws = new WebSocket("ws://164.92.250.16:8000/ws");
-
-
-ws.onopen = function () {
-    console.log("Connected to server");
-    myVideo = document.getElementById("video");
-    videoListener = document.getElementById("myVideo").addEventListener("change", chVideo);
-};
-ws.onclose = function () { console.log("Connection closed") }
-
-ws.onmessage = function (event) {
-    var data = JSON.parse(event.data);
-    console.log(data);
-    if (data.data == "play")
-        myVideo.play();
-    else if (data.data == "pause")
-        myVideo.pause();
-}
+var second;
 
 function playPause() {
     if (myVideo.paused) {
@@ -43,6 +25,39 @@ function makeSmall() {
 function chVideo(e) {
     var file = this.files[0]
     var fileURL = URL.createObjectURL(file)
-    console.log("changed =>",e.target.value);
+    console.log("changed =>", e.target.value);
     myVideo.src = fileURL;
 }
+
+function goToSecond() {
+    ws.send(JSON.stringify({ "type": "goToSecond", "second": second.value }));
+}
+
+function setSecond(_second) {
+    console.log("setSecond =>", _second);
+    myVideo.currentTime = _second;
+}
+
+function main() {
+    
+    ws.onopen = function () {
+        console.log("Connected to server");
+        myVideo = document.getElementById("video");
+        second = document.getElementById("second");
+        videoListener = document.getElementById("myVideo").addEventListener("change", chVideo);
+    };
+    ws.onclose = function () { alert("Connection closed") }
+
+    ws.onmessage = function (event) {
+        var data = JSON.parse(event.data);
+        console.log(data);
+        if (data.data == "play")
+            myVideo.play();
+        else if (data.data == "pause")
+            myVideo.pause();
+        else if (data.data == "goToSecond")
+            setSecond(data.second);
+    }
+}
+
+main();

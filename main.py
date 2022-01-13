@@ -17,9 +17,9 @@ class ConnectionManager:
     async def send_personal_message(self, message: str, websocket: WebSocket):
         await websocket.send_json({"type": "brodcast", "data": message})
 
-    async def send_broadcast(self, message: str, websocket: WebSocket):
+    async def send_broadcast(self, message: dict, websocket: WebSocket):
         for connection in self.active_connections:
-            await connection.send_json({"type": "brodcast", "data": message})
+            await connection.send_json({"type": "brodcast", **message})
 
 
 manager = ConnectionManager()
@@ -39,10 +39,14 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_json()
 
             if data["type"] == "play":
-                await manager.send_broadcast("play", websocket)
-                
+                await manager.send_broadcast({"data": "play"}, websocket)
+
             elif data["type"] == "pause":
-                await manager.send_broadcast("pause", websocket)
+                await manager.send_broadcast({"data": "pause"}, websocket)
+
+            elif data["type"] == "goToSecond":
+                await manager.send_broadcast(
+                    {"data": "goToSecond", "second": data["second"]}, websocket)
 
             else:
                 print("[another commend]", data)
@@ -53,4 +57,10 @@ async def websocket_endpoint(websocket: WebSocket):
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run("main:app", host="192.168.1.104", port=8001, ssl_keyfile="cert.key", ssl_certfile="cert.crt")
+    uvicorn.run(
+        "main:app",
+        host="192.168.1.104",
+        port=8001,
+        ssl_keyfile="cert.key",
+        ssl_certfile="cert.crt"
+    )
