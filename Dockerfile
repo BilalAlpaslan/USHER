@@ -6,5 +6,5 @@ RUN pip install -r requirements.txt
 
 ADD ./main.py /main.py
 
-CMD uvicorn main:app --port 80 --workers 1
+CMD uvicorn main:app --host 0.0.0.0 --port 80 --workers 1
 
