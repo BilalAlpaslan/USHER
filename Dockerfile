@@ -1,6 +1,6 @@
 FROM python:3.9.0-slim
 
-ADD ./requirements.txt /app/requirements.txt
+ADD ./requirements.txt /requirements.txt
 
 RUN pip install -r requirements.txt
 
