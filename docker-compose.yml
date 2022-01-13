@@ -1,0 +1,11 @@
+version: "3.4"
+
+services:
+    usher-ws:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        container_name: usher-ws
+        restart: always
+        ports:
+            - 8000:80
