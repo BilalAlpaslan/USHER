@@ -1,10 +1,10 @@
 FROM python:3.9.0-alpine
 
-ADD requirements.txt /app/requirements.txt
+ADD requirements.txt /requirements.txt
 
-RUN pip install -r app/requirements.txt
+RUN pip install -r requirements.txt
 
-ADD . /app/
+ADD main.py /main.py
 
 EXPOSE 80
-CMD gunicorn app.main:app --log-level info --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:80
+CMD uvicorn main:app --host 0.0.0.0 --port 80 --ws websockets
