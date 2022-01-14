@@ -1,7 +1,10 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9-slim
+FROM python:3.9.0-alpine
 
-ADD ./requirements.txt /app/requirements.txt
+ADD requirements.txt /app/requirements.txt
 
-RUN pip install -r requirements.txt
+RUN pip install -r app/requirements.txt
 
-COPY . /app
+ADD . /app/
+
+EXPOSE 80
+CMD gunicorn app.main:app --log-level info --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:80
