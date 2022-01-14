@@ -38,6 +38,10 @@ function setSecond(_second) {
     myVideo.currentTime = _second;
 }
 
+function hideNav() {
+    document.getElementById("nav").style.display = "none";
+}
+
 function main() {
     
     ws.onopen = function () {
