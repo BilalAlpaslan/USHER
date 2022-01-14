@@ -42,6 +42,16 @@ function hideNav() {
     document.getElementById("nav").style.display = "none";
 }
 
+function back(i){
+    myVideo.currentTime -= i;
+    ws.send(JSON.stringify({ "type": "goToSecond", "second": myVideo.currentTime }));
+}
+
+function forward(i){
+    myVideo.currentTime += i;
+    ws.send(JSON.stringify({ "type": "goToSecond", "second": myVideo.currentTime }));
+}
+
 function main() {
     
     ws.onopen = function () {
