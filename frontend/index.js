@@ -40,6 +40,12 @@ function setSecond(_second) {
 
 function hideNav() {
     document.getElementById("nav").style.display = "none";
+    document.getElementById("nav-hide").style.display = "block";
+}
+
+function openNav() {
+    document.getElementById("nav").style.display = "block";
+    document.getElementById("nav-hide").style.display = "none";
 }
 
 function back(i){
