@@ -59,7 +59,17 @@ function forward(i){
 }
 
 function main() {
-    
+    var url = new URL(window.location.href);
+    var video_name = url.searchParams.get("v");
+    // var isAdmin = url.searchParams.get("admin"); //TODO: admin settings
+
+    setTimeout(function () {
+        if (video_name.length > 0) {
+            myVideo = document.getElementById("video");
+            myVideo.src = "./video/" + video_name;
+        }
+    }, 1000);
+
     ws.onopen = function () {
         console.log("Connected to server");
         myVideo = document.getElementById("video");
