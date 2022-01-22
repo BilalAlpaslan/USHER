@@ -5,10 +5,6 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 app = FastAPI()
 
 
-def get_unique_id(id) -> str:
-    return f"{id}-{random.randint(0, 1000)}"
-
-
 class ConnectionManager:
     def __init__(self):
         self.active_connections: Dict[str, WebSocket] = {}
@@ -17,7 +13,7 @@ class ConnectionManager:
         await websocket.accept()
 
         while client_id in self.active_connections:
-            client_id = get_unique_id(client_id)
+            client_id = self.get_unique_client_id(client_id)
 
         self.active_connections[client_id] = websocket
         await self.send_broadcast({"data": "newUser", "client_id": client_id})
@@ -31,12 +27,17 @@ class ConnectionManager:
         self.active_connections.pop(client_id)
         await self.send_broadcast({"data": "userLeft", "client_id": client_id})
 
+    def get_unique_client_id(self, id) -> str:
+        return f"{id}-{random.randint(0, 1000)}"
+
     async def send_personal_message(self, message: dict, client_id: str):
-        await self.active_connections[client_id].send_json({"type": "personal", **message})
+        await self.active_connections[client_id].send_json(
+            {"type": "personal", **message})
 
     async def send_broadcast(self, message: dict):
         for connection in self.active_connections:
-            await self.active_connections[connection].send_json({"type": "brodcast", **message})
+            await self.active_connections[connection].send_json(
+                {"type": "brodcast", **message})
 
 
 manager = ConnectionManager()
@@ -71,7 +72,5 @@ if __name__ == '__main__':
     import uvicorn
     uvicorn.run(
         "main:app",
-        host="192.168.1.104",
-        port=8001,
-        reload=True,
+        host="192.168.1.104", port=8001, reload=True,
     )
