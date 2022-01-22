@@ -10,6 +10,10 @@ class ConnectionManager:
 
     async def connect(self, websocket: WebSocket, client_id: str):
         await websocket.accept()
+
+        if client_id in self.active_connections:
+            client_id = f"{client_id}-{len(self.active_connections)}"
+
         self.active_connections[client_id] = websocket
         await self.send_broadcast({"data": "newUser", "client_id": client_id})
         await self.send_personal_message(
