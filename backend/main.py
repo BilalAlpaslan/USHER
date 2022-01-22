@@ -5,6 +5,10 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 app = FastAPI()
 
 
+def get_unique_id(id) -> str:
+    return f"{id}-{random.randint(0, 1000)}"
+
+
 class ConnectionManager:
     def __init__(self):
         self.active_connections: Dict[str, WebSocket] = {}
@@ -12,8 +16,8 @@ class ConnectionManager:
     async def connect(self, websocket: WebSocket, client_id: str):
         await websocket.accept()
 
-        if client_id in self.active_connections:
-            client_id = f"{client_id}-{random.randint(0, 100)}"
+        while client_id in self.active_connections:
+            client_id = get_unique_id(client_id)
 
         self.active_connections[client_id] = websocket
         await self.send_broadcast({"data": "newUser", "client_id": client_id})
