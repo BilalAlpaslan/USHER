@@ -1,3 +1,4 @@
+import random
 from typing import Dict
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
@@ -12,7 +13,7 @@ class ConnectionManager:
         await websocket.accept()
 
         if client_id in self.active_connections:
-            client_id = f"{client_id}-{len(self.active_connections)}"
+            client_id = f"{client_id}-{random.randint(0, 100)}"
 
         self.active_connections[client_id] = websocket
         await self.send_broadcast({"data": "newUser", "client_id": client_id})
