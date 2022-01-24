@@ -70,7 +70,7 @@ const VideoPlayer = () => {
                                 controller.play ?
                                     <BsPauseFill size={30} />
                                     :
-                                    <BsFillPlayFill size={30} />
+                                    <BsFillPlayFill size={40} />
                             }
                         </div>
                         <div className='d-flex align-items-center'>
