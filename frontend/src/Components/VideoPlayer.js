@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BsFillPlayFill, BsPauseFill, BsFillVolumeUpFill, BsFillVolumeMuteFill } from "react-icons/bs"
 import { RiFullscreenLine } from "react-icons/ri"
 
@@ -9,11 +9,12 @@ const VideoPlayer = () => {
     const titleRef = useRef()
     const controlBarRef = useRef()
 
+
     const [controller, setController] = useState({
         play: false,
         fullScreen: false,
         volume: false,
-        volumeMute: false
+        volumeMute: false,
     })
 
     const handlePlay = () => {
@@ -21,10 +22,11 @@ const VideoPlayer = () => {
             setTimeout(() => {
                 titleRef.current.style.display = "none"
             }, 1000)
+            console.log(videoRef.current.duration - videoRef.current.duration / 60 * 60);
             videoRef.current.play()
-            setController({ play: true })
+            setController({ ...controller, play: true })
         } else if (controller.play) {
-            setController({ play: false })
+            setController({ ...controller, play: false })
             titleRef.current.style.display = "block"
             videoRef.current.pause()
         }
@@ -40,9 +42,10 @@ const VideoPlayer = () => {
     }
     const openVolume = () => {
         if (!controller.volume) {
-            setController({ volume: true })
+            setController({ ...controller, volume: true })
+            console.log(controller);
         } else if (controller.volume) {
-            setController({ volume: false })
+            setController({ ...controller, volume: false })
         }
     }
     const volumeRange = (e) => {
@@ -51,9 +54,11 @@ const VideoPlayer = () => {
 
     }
     return (
-        <div className="videoplayer mt-5" id="myPlayer">
-            <div className="ratio ratio-21x9 position-relative bg-dark">
-                <video ref={videoRef} className="video" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4#t=9" />
+        <div className="videoplayer mt-5 d-flex" id="myPlayer">
+            <div style={{
+                flex: 1.5
+            }}  className="ratio ratio-21x9 position-relative bg-dark">
+                <video onClick={handlePlay} ref={videoRef} className="video" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4#t=9" />
                 <div ref={titleRef} style={{
                     top: 0
                 }} className="position-absolute text-light p-5">
@@ -90,11 +95,19 @@ const VideoPlayer = () => {
                                 <div className="progress-bar" />
                             </div>
                         </div>
+                        <div className='text-light'>
+                            00:01/15:10
+                        </div>
                         <div onClick={fullScreen} className="btn text-light">
                             <RiFullscreenLine size={30} />
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className='ms-5' style={{
+                flex: 0.5
+            }}>
+                Odalar
             </div>
 
         </div>
