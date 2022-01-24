@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { BsFillPlayFill, BsPauseFill, BsFillVolumeUpFill, BsFillVolumeMuteFill } from "react-icons/bs"
 import { RiFullscreenLine } from "react-icons/ri"
@@ -8,7 +9,7 @@ const VideoPlayer = () => {
     const videoRef = useRef()
     const titleRef = useRef()
     const controlBarRef = useRef()
-
+    const currentTimeRef = useRef()
 
     const [controller, setController] = useState({
         play: false,
@@ -16,14 +17,17 @@ const VideoPlayer = () => {
         volume: false,
         volumeMute: false,
     })
-
+    const handleLoad = () => {
+        setController({ ...controller })
+    }
     const handlePlay = () => {
         if (!controller.play) {
             setTimeout(() => {
                 titleRef.current.style.display = "none"
+                controlBarRef.current.style.display = "none"
             }, 1000)
-            console.log(videoRef.current.duration - videoRef.current.duration / 60 * 60);
             videoRef.current.play()
+            console.log(videoRef);
             setController({ ...controller, play: true })
         } else if (controller.play) {
             setController({ ...controller, play: false })
@@ -32,13 +36,7 @@ const VideoPlayer = () => {
         }
     }
     const fullScreen = () => {
-        if (!controller.fullScreen) {
-            videoRef.current.requestFullscreen()
-            controller.fullScreen = true
-        } else if (controller.fullScreen) {
-            videoRef.current.exitFullscreen()
-            controller.fullScreen = false
-        }
+        videoRef.current.requestFullscreen()
     }
     const openVolume = () => {
         if (!controller.volume) {
@@ -47,6 +45,16 @@ const VideoPlayer = () => {
         } else if (controller.volume) {
             setController({ ...controller, volume: false })
         }
+    }
+    const handleCurrentTime = () => {
+        currentTimeRef.current.innerHTML = `<span>
+        ${Math.floor(videoRef.current.currentTime / 60)}
+        </span> :
+        <span>
+        ${Math.floor(videoRef.current.currentTime % 60)}
+        </span> `
+
+
     }
     const volumeRange = (e) => {
 
@@ -57,8 +65,8 @@ const VideoPlayer = () => {
         <div className="videoplayer mt-5 d-flex" id="myPlayer">
             <div style={{
                 flex: 1.5
-            }}  className="ratio ratio-21x9 position-relative bg-dark">
-                <video onClick={handlePlay} ref={videoRef} className="video" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4#t=9" />
+            }} className="ratio ratio-21x9 position-relative bg-dark">
+                <video onClick={handlePlay} onTimeUpdate={handleCurrentTime} ref={videoRef} onLoadedData={handleLoad} className="video" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4#t=9" />
                 <div ref={titleRef} style={{
                     top: 0
                 }} className="position-absolute text-light p-5">
@@ -68,7 +76,7 @@ const VideoPlayer = () => {
                 </div>
                 <div ref={controlBarRef} style={{
                     "bottom": 0
-                }} className="d-flex align-items-end position-absolute">
+                }} className="d-flex align-items-end position-absolute justify-content-between">
                     <div className='w-100 d-flex align-items-center'>
                         <div onClick={handlePlay} className="btn text-light">
                             {
@@ -91,12 +99,22 @@ const VideoPlayer = () => {
 
                         </div>
                         <div className="px-3 w-100" >
-                            <div className="progress w-100">
+                            <div className="progress">
                                 <div className="progress-bar" />
                             </div>
                         </div>
-                        <div className='text-light'>
-                            00:01/15:10
+                        <div className='text-light d-flex'>
+                            {
+                                videoRef.current && (
+                                    <React.Fragment>
+                                        <span className='d-flex' ref={currentTimeRef}>00:00</span>
+                                        /
+                                        <span>
+                                            {Math.floor(videoRef.current.duration / 60)}:{Math.floor(videoRef.current.duration % 60)}
+                                        </span>
+                                    </React.Fragment>
+                                )
+                            }
                         </div>
                         <div onClick={fullScreen} className="btn text-light">
                             <RiFullscreenLine size={30} />
