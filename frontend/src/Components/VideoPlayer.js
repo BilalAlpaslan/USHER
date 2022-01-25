@@ -47,11 +47,23 @@ const VideoPlayer = () => {
         }
     }
     const handleCurrentTime = () => {
+        let min = Math.floor(videoRef.current.currentTime / 60)
+        let sec = Math.floor(videoRef.current.currentTime % 60)
+        if (sec < 10) {
+            sec = "0" + sec
+        } else {
+            sec
+        }
+        if (min < 10) {
+            min = "0" + min
+        } else {
+            min
+        }
         currentTimeRef.current.innerHTML = `<span>
-        ${Math.floor(videoRef.current.currentTime / 60)}
+        ${min}
         </span> :
         <span>
-        ${Math.floor(videoRef.current.currentTime % 60)}
+        ${sec}
         </span> `
 
 
@@ -100,7 +112,11 @@ const VideoPlayer = () => {
                         </div>
                         <div className="px-3 w-100" >
                             <div className="progress">
-                                <div className="progress-bar" />
+                                {
+
+                                    <div className="progress-bar" role="progressbar" style={{ width: "100%" }} aria-valuemin="0" aria-valuemax="100" />
+                                }
+
                             </div>
                         </div>
                         <div className='text-light d-flex'>
