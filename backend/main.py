@@ -24,7 +24,7 @@ class ConnectionManager:
             }, client_id)
 
     async def disconnect(self, websocket: WebSocket, client_id: str):
-        self.active_connections.pop(client_id)
+        self.active_connections.pop(client_id) # remove client from list not working
         await self.send_broadcast({"data": "userLeft", "client_id": client_id})
 
     def get_unique_client_id(self, id) -> str:
