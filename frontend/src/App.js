@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
 import VideoPlayer from 'react-video-js-player';
-import { init } from './WebSocket/socket-client';
+import { init, wsConnect } from './WebSocket/socket-client';
 
 
 function App() {
-  // useEffect(() => {
-  //   init()
-  // }, [])
+  useEffect(wsConnect, []);
 
   return (
     <div className='h-screen bg-slate-800 flex flex-col items-center'>
