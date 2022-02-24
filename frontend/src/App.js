@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import VideoPlayer from 'react-video-js-player';
-import { init, wsConnect } from './WebSocket/socket-client';
+import { wsConnect } from './WebSocket/socket-client';
 
 
 function App() {
