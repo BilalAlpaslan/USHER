@@ -12,7 +12,7 @@ class ConnectionManager:
     async def connect(self, websocket: WebSocket, client_id: str):
         await websocket.accept()
 
-        while client_id in self.active_connections:
+        while client_id in self.active_connections.keys():
             client_id = self.get_unique_client_id(client_id)
 
         self.active_connections[client_id] = websocket
