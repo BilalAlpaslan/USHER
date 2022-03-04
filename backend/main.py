@@ -9,7 +9,7 @@ class ConnectionManager:
     def __init__(self):
         self.active_connections: Dict[str, WebSocket] = {}
 
-    async def connect(self, websocket: WebSocket, client_id: str):
+    async def connect(self, websocket: WebSocket, client_id: str = "guest"):
         await websocket.accept()
 
         while client_id in self.active_connections.keys():
@@ -44,8 +44,9 @@ manager = ConnectionManager()
 
 
 @app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket, client_id: str = None):
-    await manager.connect(websocket, client_id)
+async def websocket_endpoint(websocket: WebSocket, client: str = None):
+    print(client)
+    await manager.connect(websocket, client)
 
     try:
         while True:
@@ -65,8 +66,8 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str = None):
                 print("[another commend]", data)
 
     except WebSocketDisconnect:
-        await manager.disconnect(websocket, client_id)
-        await manager.send_broadcast({"data": "disconnect", "user": client_id})
+        await manager.disconnect(websocket, client)
+        await manager.send_broadcast({"data": "disconnect", "user": client})
 
 if __name__ == '__main__':
     import uvicorn
