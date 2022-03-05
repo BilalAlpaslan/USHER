@@ -1,10 +1,14 @@
 import { useEffect, useRef } from 'react';
 import VideoPlayer from 'react-video-js-player';
+import { roomEntity } from './bloc/room';
 import { wsConnect } from './WebSocket/socket-client';
 
+var rooms = roomEntity.use()
 
 function App() {
-  useEffect(() => { wsConnect(videoRef) }, []);
+  useEffect(() => { 
+    wsConnect(videoRef)
+  }, []);
   const videoRef = useRef()
   return (
     <div className='h-screen bg-slate-800 flex flex-col items-center'>
@@ -19,6 +23,7 @@ function App() {
         />
         <div className='text-white mx-5'>
           odadakiler
+          {rooms}
         </div>
       </div>
     </div>

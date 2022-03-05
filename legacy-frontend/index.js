@@ -60,8 +60,8 @@ function forward(i) {
 
 function main() {
 
-    var client_name = prompt("Enter your name", "Guest");
-    ws = new WebSocket("ws://192.168.1.104:8001/ws?client_name=" + client_name);
+    var client_name = prompt("Enter your name", "guest");
+    ws = new WebSocket("ws://192.168.1.104:8001/ws?client=" + client_id);
 
     var url = new URL(window.location.href);
     var video_name = url.searchParams.get("v");
