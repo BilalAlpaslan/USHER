@@ -3,9 +3,9 @@ import VideoPlayer from 'react-video-js-player';
 import { roomEntity } from './bloc/room';
 import { wsConnect } from './WebSocket/socket-client';
 
-var rooms = roomEntity.use()
 
 function App() {
+  var rooms = roomEntity.use()
   useEffect(() => { 
     wsConnect(videoRef)
   }, []);
