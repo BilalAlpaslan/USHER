@@ -1,12 +1,11 @@
+import { setRoom } from "../bloc/room";
+
 var ws
-// var myVideo
-// var videoListener;
-// var second;
 
 export const wsConnect = (videoRef, username = "Guest") => {
     // myVideo = videoRef
 
-    ws = new WebSocket("ws://192.168.1.104:8001/ws?client=" + username);
+    ws = new WebSocket("ws://127.0.0.1:8001/ws?client=" + username);
 
 
     ws.onopen = () => {
@@ -29,5 +28,6 @@ export const wsConnect = (videoRef, username = "Guest") => {
             // setSecond(data.second);
         else if (data.data === "room")
             console.log(data.persons)
+            setRoom(data.persons)
     }
 }

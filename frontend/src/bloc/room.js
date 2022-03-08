@@ -2,6 +2,6 @@ import { entity } from "simpler-state";
 
 export const roomEntity = entity([]);
 
-export const setAdress = (persons) => {
+export const setRoom = (persons) => {
     roomEntity.set(persons)
 };

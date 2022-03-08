@@ -23,7 +23,7 @@ function App() {
         />
         <div className='text-white mx-5'>
           odadakiler
-          {rooms}
+          {rooms.forEach(person=> <>{person}</> )}
         </div>
       </div>
     </div>
