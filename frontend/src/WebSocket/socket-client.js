@@ -1,4 +1,4 @@
-import { setRoom } from "../bloc/room";
+import { addPerson, setRoom, removePerson } from "../bloc/room";
 
 var ws
 
@@ -27,7 +27,10 @@ export const wsConnect = (videoRef, username = "Guest") => {
             console.log("go to second")
             // setSecond(data.second);
         else if (data.data === "room")
-            console.log(data.persons)
             setRoom(data.persons)
+        else if (data.data === "newUser")
+            addPerson(data.client_id)
+        else if (data.data === "userLeft")
+            removePerson(data.client_id)
     }
 }
