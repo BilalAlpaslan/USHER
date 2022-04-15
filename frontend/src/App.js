@@ -5,11 +5,14 @@ import { wsConnect } from './WebSocket/socket-client';
 
 
 function App() {
+
   var rooms = roomEntity.use()
+  const videoRef = useRef()
+
   useEffect(() => { 
     wsConnect(videoRef)
   }, []);
-  const videoRef = useRef()
+
   return (
     <div className='h-screen bg-slate-800 flex flex-col items-center'>
       <div className='text-2xl my-14 w-full text-white text-center'>Usher Media player</div>
@@ -23,7 +26,7 @@ function App() {
         />
         <div className='text-white mx-5'>
           odadakiler
-          {rooms & rooms.map(person=> <>{person}</> )}
+          {rooms ? rooms.map((person, index)=> <p key={index}>{person}</p> ) : null}
         </div>
       </div>
     </div>
