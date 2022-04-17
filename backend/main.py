@@ -68,10 +68,12 @@ async def websocket_endpoint(websocket: WebSocket, client: str = None):
     except WebSocketDisconnect:
         await manager.disconnect(websocket, client)
         await manager.send_broadcast({"data": "disconnect", "user": client})
+    except Exception as e:
+        print('hata')
 
 if __name__ == '__main__':
     import uvicorn
     uvicorn.run(
         "main:app",
-        host="192.168.1.104", port=8001, reload=True,
+        port=8001, reload=True,
     )
