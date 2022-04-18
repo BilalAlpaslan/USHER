@@ -24,7 +24,8 @@ class ConnectionManager:
             }, client_id)
 
     async def disconnect(self, websocket: WebSocket, client_id: str):
-        self.active_connections.pop(client_id) # remove client from list not working
+        # remove client from list not working
+        self.active_connections.pop(client_id)
         await self.send_broadcast({"data": "userLeft", "client_id": client_id})
 
     def get_unique_client_id(self, id) -> str:
@@ -35,9 +36,16 @@ class ConnectionManager:
             {"type": "personal", **message})
 
     async def send_broadcast(self, message: dict):
+        inactives = []
         for connection in self.active_connections:
-            await self.active_connections[connection].send_json(
-                {"type": "brodcast", **message})
+            try:
+                await self.active_connections[connection].send_json(
+                    {"type": "brodcast", **message})
+            except RuntimeError:
+                inactives.append(connection)
+        # clean up inactive connections
+        for inactive in inactives:
+            self.active_connections.pop(inactive)
 
 
 manager = ConnectionManager()
@@ -67,9 +75,10 @@ async def websocket_endpoint(websocket: WebSocket, client: str = None):
 
     except WebSocketDisconnect:
         await manager.disconnect(websocket, client)
-    except Exception as e:
-        print('hata')
-        await manager.disconnect(websocket, client)
+    finally:
+        if websocket in manager.active_connections.values():
+            print("cleaned in final")
+            await manager.disconnect(websocket, client)
 
 if __name__ == '__main__':
     import uvicorn
