@@ -6,7 +6,6 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  Link,
 } from "react-router-dom";
 
 
@@ -17,12 +16,17 @@ const Player = () => {
   var rooms = roomEntity.use()
 
 
+  const handleReady = () => {
+    if (username) setReady(true)
+  }
+
+
   useEffect(() => {
     if (isReady) {
       if (username === null || username === undefined || username === "") setUsername("Guest")
       wsConnect(videoRef, username)
     }
-  }, [isReady]);
+  }, [isReady, username]);
 
   return (
     <div className='h-screen bg-slate-800 flex flex-col items-center'>
@@ -49,7 +53,7 @@ const Player = () => {
               <input
                 className='w-full my-4' type='text' placeholder='Username'
                 onChange={(e) => setUsername(e.target.value)} />
-              <button className='w-full my-4 bg-blue-500 text-white' onClick={() => setReady(true)}>Connect</button>
+              <button className='w-full my-4 bg-blue-500 text-white' onClick={handleReady}>Connect</button>
             </div>
           )
       }
